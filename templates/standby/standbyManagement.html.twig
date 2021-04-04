@@ -1,0 +1,79 @@
+{% extends 'appbase.html.twig' %}
+{% block additionalStuff %}
+<script src="/js/calendar-main.js"></script>
+<link rel="stylesheet" href="/css/fullcalendar-main.css">
+{% endblock %}
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Planung verwalten</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id='calendar'></div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="entryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Eintrag erstellen / editieren</h5>
+            <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="modalAlert" style="display:none" class="alert alert-danger" role="alert">
+              ALERT
+            </div>
+            <form id="entryForm">
+              <div class="form-group">
+                <label for="InputEventId">Planungs ID</label>
+                <input disabled class="form-control" type="text" name="EventId" id="InputEventId">
+              </div>
+              <div class="form-group">
+                <label for="InputEventFrom">Start</label>
+                <input class="form-control" type="date" name="EventStart" id="InputEventFrom">
+              </div>
+              <div class="form-group">
+                <label for="InputEventTo">Ende</label>
+                <input class="form-control" type="date" name="EventEnd" id="InputEventTo">
+              </div>
+              <div class="form-group">
+                <label for="EventUser">Benutzer</label>
+                <select name="EventUser" class="form-control" id="EventUser">
+                  {% if is_granted('ROLE_ADMIN') %}
+                  {% for user in users %}
+                    <option value="{{user.getId}}">{{user.getFirstname}} {{user.getLastname}}</option>
+                  {% endfor %}
+                  {% else %}
+                    <option value="{{curruser.getId}}">{{curruser.getFirstname}} {{curruser.getLastname}}</option>
+                  {% endif %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="EventUser">Status</label>
+                <select name="EventStatus" class="form-control" id="EventStatus">
+                  {% for stat in status %}
+                    <option value="{{stat.getId}}">{{stat.getStatusName}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="BtnDelete" type="button" style="display:none" class="btn btn-danger">Delete</button>
+            <button id="BtnSave" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/standbyManager.js" charset="utf-8"></script>
+  </body>
+</html>
+{% endblock %}

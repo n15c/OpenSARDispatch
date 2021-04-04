@@ -1,0 +1,51 @@
+{% extends 'appbase.html.twig' %}
+{% block title %}Welcome to {{ appname }}{% endblock %}
+{% block additionalStuff %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+  <script src="/js/userConfig.js" charset="utf-8"></script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h3>Benutzereinstellungen</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+        <form method="post">
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <label for="userConfigFirstName">Vorname</label>
+                <input value="{{curruser.firstname}}" type="text" class="form-control" name="firstname" id="userConfigFirstName" placeholder="Vorname">
+              </div>
+              <div class="col">
+                <label for="userConfigLastName">Nachname</label>
+                <input value="{{curruser.lastname}}" type="text" class="form-control" name="lastname" id="userConfigLastName" placeholder="Nachname">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <label for="userConfigMail">Email address</label>
+                <input type="email" value="{{curruser.email}}" class="form-control" name="mail" id="userConfigMail" placeholder="Enter email">
+              </div>
+              <div class="col">
+                <label for="userConfigPhone">Mobiltelefon</label>
+                <input type="text" value="{{curruser.phone}}" class="form-control" name="phone" id="userConfigPhone" placeholder="Enter Phone">
+              </div>
+            </div>
+          </div>
+          <button style="margin-top:1%;" type="button" onclick="saveUserConfig()" class="btn btn-primary">Speichern</button>
+        </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
