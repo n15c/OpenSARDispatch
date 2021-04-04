@@ -1,0 +1,58 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Einsatzdetails</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Einsatz-ID</th>
+                <td>{{operation.getID()}}</td>
+              </tr>
+              <tr>
+                <th>Einsatzdatum</th>
+                <td>{{operation.getPlannedDate() | date("d.m.Y H:i")}}</td>
+              </tr>
+              <tr>
+                <th>Kommentar</th>
+                <td>{{operation.getComment()}}</td>
+              </tr>
+              <tr>
+                <th>Ersteller</th>
+                <td>{{operation.getCreator().Firstname()}} {{operation.getCreator().Lastname()}}</td>
+              </tr>
+              <tr>
+                <th>Eingeplante Piloten</th>
+                <td>
+                  <ul>
+                    {% for stby in standbies %}
+                    <li>{{stby.getUser().Firstname}} {{stby.getUser().Lastname}}</li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm">
+          <form>
+            <input type="hidden" id="coords" value="{{operation.getPosition()[0]}}">
+          </form>
+          <div id="intelMap" style="height:400px;"></div>
+        </div>
+      </div>
+      <script src="/js/intelOP.js" charset="utf-8"></script>
+    </div>

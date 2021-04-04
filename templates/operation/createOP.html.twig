@@ -1,0 +1,44 @@
+{% extends 'appbase.html.twig' %}
+{% block title %}Welcome to {{ appname }}{% endblock %}
+{% block additionalStuff %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Einsatz erstellen</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form method=post onsubmit="checkSubmit(event)">
+            <div class="mb-3">
+              <label for="chooseMap" class="form-label">Position</label>
+              <input name="InputPos" type="hidden" class="form-control" id="InputPos" aria-describedby="InputPosHelp">
+              <div id="chooseMap" style="height:400px;"></div>
+            </div>
+            <div class="mb-3">
+              <label for="InputPlanDate" class="form-label">Datum</label>
+              <input required name="InputPlanDate" type="datetime-local" class="form-control" id="InputPlanDate">
+              <div required id="InputPlanDateHelp" class="form-text">Format: DD.MM.YYYY HH:MM</div>
+            </div>
+            <div class="mb-3">
+              <label for="InputComment" class="form-label">Bemerkungen</label>
+              <input name="InputComment" type="text" class="form-control" id="InputComment">
+              <div id="InputCommentHelp" class="form-text">Allfällige Bemerkungen, etc.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="/js/createOP.js" charset="utf-8"></script>
+  </body>
+</html>
+{% endblock %}

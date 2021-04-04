@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% endblock %}
+        {% block stylesheets %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        {% endblock %}
+        {% block additionalStuff %}
+        {% endblock %}
+
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-print-none">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">{{ appname }}</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/app/operations">Einsätze</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/app/getUsers">Personen</a>
+              </li>
+              {% if is_granted('ROLE_PILOT') %}
+              <li class="nav-item">
+                <a class="nav-link" href="/app/standby" tabindex="-1" aria-disabled="true">Einteilungsplan</a>
+              </li>
+              {% endif %}
+              {% if is_granted('ROLE_FARMER') %}
+              <li class="nav-item">
+                <a class="nav-link" href="/app/createOp" tabindex="-1" aria-disabled="true">Einsatz erstellen</a>
+              </li>
+              {% endif %}
+              {% if is_granted('ROLE_SUPERADMIN') %}
+              <li class="nav-item">
+                <a class="nav-link" href="/admin" tabindex="-1" aria-disabled="true">Administrator</a>
+              </li>
+              {% endif %}
+            </ul>
+
+            <div class="dropdown show">
+              <a class="btn btn-primary  dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{curruser.getFirstname}} {{curruser.getLastname}}
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/app/userConfig">Konto verwalten</a>
+                <a class="dropdown-item" href="/logout">Abmelden</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      {% block body %}{% endblock %}
+      {% block endjavascripts %}
+      {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,130 @@
+{% extends 'appbase.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2 class="display-2">Administration</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Benutzer verwalten</h3>
+      <button type="button" onclick="addUserModal()" class="btn btn-success" name="button">Benutzer hinzufügen</button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mailadresse</th>
+            <th scope="col">Rollen</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for user in users %}
+      <tr onclick="editUserModal({{user.id}})">
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.lastname}} {{user.firstname}}</td>
+        <td>{{user.email}}</td>
+        <td><ul>
+          {% for role in user.roles %}
+          <li>{{role}}</li>
+          {% endfor %}
+        </ul></td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    <div class="col">
+      <h3>Status verwalten</h3>
+      <form action="/admin/addStatus" method="post">
+        <div class="input-group">
+          <input required class="form-control" type="text" name="statusName" value="" placeholder="Statusname">
+          <input type="hidden" name="token" value="{{ csrf_token('create-item') }}"/>
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-success" name="button">Status hinzufügen</button>
+          </div>
+        </div>
+      </form>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Loeschen</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for status in statuses %}
+      <tr>
+        <td scope="row">{{status.getStatusName}}</td>
+        <td>
+          <form class="" action="/admin/deleteStatus" method="post">
+            <button class="btn btn-danger" type="submit" value="{{status.id}}" name="statusid">Loeschen</button>
+            <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}"/>
+          </form>
+          </td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- editUser Modal  -->
+<div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel">Benutzer editieren / hinzufügen</h5>
+        <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="ModalFormUserID">Benutzer ID</label>
+            <input disabled type="number" class="form-control" id="ModalFormUserID" placeholder="ID">
+          </div>
+          <div class="form-group">
+            <label for="ModalFormUsername">Mailadresse</label>
+            <input type="text" class="form-control" id="ModalFormUsername">
+            <label for="ModalFormPhone">Mobiltelefon</label>
+            <input type="text" class="form-control" id="ModalFormPhone">
+          </div>
+          <div class="form-group">
+            <label>Name</label>
+            <div class="row">
+              <div class="col">
+                <input type="text" class="form-control" id="ModalFormFirstName" placeholder="Vorname">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" id="ModalFormLastName" placeholder="Nachname">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ModalFormRole">Rolle</label>
+            <select multiple class="form-control" id="ModalFormRole">
+              <option value="ROLE_PILOT">Pilot</option>
+              <option value="ROLE_HELP">Helfer</option>
+              <option value="ROLE_FARMER">Landwirtschaft</option>
+              <option value="ROLE_USER">Benutzer</option>
+              <option value="ROLE_ADMIN">Administrator</option>
+              <option value="ROLE_SUPERADMIN">Superadministrator</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="delUsrBtn" type="button" class="btn btn-danger">Benutzer löschen</button>
+        <button id="saveUsrBtn" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/js/adminUI.js" charset="utf-8"></script>
+{% endblock %}

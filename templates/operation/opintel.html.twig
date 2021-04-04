@@ -1,0 +1,61 @@
+{% extends 'appbase.html.twig' %}
+{% block title %}Welcome to {{ appname }}{% endblock %}
+{% block additionalStuff %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Einsatzdetails</h4>
+          <button type="button" class="btn btn-success d-print-none" onclick="document.location='/app/reports/{{operation.getId()}}'">Report öffnen</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Einsatz-ID</th>
+                <td>{{operation.getID()}}</td>
+              </tr>
+              <tr>
+                <th>Einsatzdatum</th>
+                <td>{{operation.getPlannedDate() | date("d.m.Y H:i")}}</td>
+              </tr>
+              <tr>
+                <th>Kommentar</th>
+                <td>{{operation.getComment()}}</td>
+              </tr>
+              <tr>
+                <th>Ersteller</th>
+                <td>{{operation.getCreator().Firstname()}} {{operation.getCreator().Lastname()}}</td>
+              </tr>
+              <tr>
+                <th>Eingeplante Piloten</th>
+                <td>
+                  <ul>
+                    {% for stby in standbies %}
+                    <li>{{stby.getUser().Firstname}} {{stby.getUser().Lastname}}</li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm">
+          <form>
+            <input type="hidden" id="coords" value="{{operation.getPosition()[0]}}">
+          </form>
+          <div id="intelMap" style="height:400px;"></div>
+        </div>
+      </div>
+      <script src="/js/intelOP.js" charset="utf-8"></script>
+    </div>
+{% endblock %}

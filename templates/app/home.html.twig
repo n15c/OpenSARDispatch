@@ -1,0 +1,22 @@
+{% extends 'appbase.html.twig' %}
+{% block title %}Welcome to {{ appname }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Startseite</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p>Herzlich Willkommen zum Verwaltungssystem {{appname}}!</p>
+          <p>Hier können Pikettdienste geplant, Einsätze verwaltet und Rapporte erfasst werden. Für Hilfe kann das Handbuch konsultiert werden (noch zu erstellen).</p>
+          <p>Fragen oder Feedback können gerne via Mail an <a href="mailto:nisc@n3xus.io">nisc@n3xus.io</a> gesendet werden.</p>
+          <p>Viel Spass!</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock %}
