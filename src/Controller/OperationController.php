@@ -70,7 +70,7 @@ class OperationController extends AbstractController
         }
 
         $response = new Response();
-        $response->headers->set('Location', '/app/createOp');
+        $response->headers->set('Location', '/app/operations/' . $rescueop->getId());
         $response->setStatusCode(303);
         return $response;
       }
