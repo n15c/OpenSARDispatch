@@ -14,11 +14,13 @@ composer install
 
 Copy the .env file to .env.local and configure the values inside the file.
 
-## Usage
+## Usage in developer environments
 
 ```php
-php ./bin/console
+symfony serve
 ```
+
+Then opening a web browser with URL 127.0.0.1:8000
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
