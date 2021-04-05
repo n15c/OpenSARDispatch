@@ -57,7 +57,7 @@ class StandbyRepository extends ServiceEntityRepository
            // ->andWhere('s.dateFrom <= :opdate')
            // ->andWhere('s.dateTo >= :opdate')
            ->andWhere(':opdate BETWEEN s.dateFrom AND s.dateTo')
-           ->andWhere('s.status = 1')
+           //->andWhere('s.status = 1')
            ->setParameter('opdate', $opdate->format('Y-m-d'))
            ->orderBy('s.id', 'ASC')
            ->setMaxResults(10)

@@ -32,6 +32,7 @@ class ReportController extends AbstractController
         if ($report == NULL) {
           $report = new OPReport();
           $report->setOperation($rescueop);
+          $report->setReportClosed(0);
           $entityManager = $this->getDoctrine()->getManager();
           $entityManager->persist($report);
           $entityManager->flush();
