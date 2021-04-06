@@ -80,6 +80,8 @@ class ReportController extends AbstractController
           if ($this->isCsrfTokenValid('save-report', $submittedToken)) {
             $report->setReportText($request->request->get('ReportText'));
             $report->setRating($request->request->get('operationRating'));
+            $report->setOPStart(new \DateTime($request->request->get('opStart')));
+            $report->setOPEnd(new \DateTime($request->request->get('opEnd')));
             if ($request->request->get('reportSigned') !== NULL) {
               $report->setReportClosed(1);
             }

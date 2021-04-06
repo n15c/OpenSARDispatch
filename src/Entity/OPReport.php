@@ -40,12 +40,12 @@ class OPReport
     private $Operators;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     private $OPStart;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     private $OPEnd;
 
