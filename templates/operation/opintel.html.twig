@@ -46,6 +46,13 @@
                   </ul>
                 </td>
               </tr>
+              <tr>
+                <th>Einsatz abgeschlossen</th>
+                <td>
+                  <input type="checkbox" {% if operation.getOpCompleted() %} checked disabled {% endif %} value="{{operation.getId()}}" class="form-check-input" onchange="setOpCompleted(this)">
+                  <small class="form-text text-muted">Sobald der Einsatz komplett beendet ist, hier den Haken setzen</small>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

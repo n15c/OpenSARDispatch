@@ -48,6 +48,11 @@ class RescueOP
      */
     private $oPReport;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $opCompleted;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -131,6 +136,18 @@ class RescueOP
         }
 
         $this->oPReport = $oPReport;
+
+        return $this;
+    }
+
+    public function getOpCompleted(): ?bool
+    {
+        return $this->opCompleted;
+    }
+
+    public function setOpCompleted(bool $opCompleted): self
+    {
+        $this->opCompleted = $opCompleted;
 
         return $this;
     }

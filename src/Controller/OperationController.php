@@ -50,6 +50,7 @@ class OperationController extends AbstractController
         $rescueop->setPosition([$request->request->get('InputPos')]);
         $rescueop->setCreationDate(new \DateTime());
         $rescueop->setCreator($curruser);
+        $rescueop->setOpCompleted(false);
         $rescueop->setComment($request->request->get('InputComment'));
         $plannedDatedate = new \DateTime($request->request->get('InputPlanDate'));
         $rescueop->setPlannedDate($plannedDatedate);
@@ -192,5 +193,32 @@ class OperationController extends AbstractController
         'operation'=>$operation,
         'standbies'=>$standbies
       ]);
+  }
+
+  /**
+  * @Route("/app/operations/close/{id}", name="app_closeop")
+  */
+  public function closeOP(int $id): Response
+  {
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+      $entityManager = $this->getDoctrine()->getManager();
+      $repository = $this->getDoctrine()->getRepository(RescueOP::class);
+      $operation = $repository->find($id);
+
+      if ($this->getUser() != $operation->getCreator()) {
+        $this->denyAccessUnlessGranted('ROLE_PILOT');
+      }
+
+      $appname = $this->getParameter('appname');
+      $operation->setOpCompleted(true);
+
+      $entityManager->persist($operation);
+      $entityManager->flush();
+
+      $response = new Response();
+      $response->setStatusCode(302);
+      $response->headers->set('Location', '/app/operations/' . $id);
+      return $response;
   }
 }
