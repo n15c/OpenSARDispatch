@@ -10,13 +10,13 @@ use App\Entity\Standby;
 use App\Entity\User;
 use App\Entity\PlanStatus;
 
-function sendPikettNotif($fromdate, $todate, $number)
+function sendPikettNotif($fromdate, $todate, $number, $appName)
 {
   $message = "Dir wurde Pikett zugeteilt:\r\n ";
   $message .= $fromdate->format('d.m.Y') . " - " . $todate->format('d.m.Y');
   $url = 'https://api.swisscom.com/messaging/sms';
   $data = array(
-    "from" => "OpenCAD",
+    "from" => $appName,
     "to" => $number,
     "text" => $message,
     "callbackUrl" => "http://swisscom.com/callbackNotification"
@@ -120,7 +120,7 @@ class StandbyController extends AbstractController
         $standby->setStatus($selStatus);
         $standby->setUser($selUser);
 
-        sendPikettNotif($standby->getDateFrom(),$standby->getDateTo(), $selUser->getPhone());
+        sendPikettNotif($standby->getDateFrom(),$standby->getDateTo(), $selUser->getPhone(), $this->getParameter('appname'));
 
         $entityManager->persist($standby);
         $entityManager->flush();

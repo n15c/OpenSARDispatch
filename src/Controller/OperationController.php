@@ -9,14 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\RescueOP;
 use App\Entity\Standby;
 
-function sendNotification($date, $number, $mapsURL)
+function sendNotification($date, $number, $mapsURL, $appName)
 {
   $message = "Es wurde ein neuer Einsatz geplant. Du bist am ";
   $message .= $date->format('d.m.Y H:i:s') . " im Einsatz! " . $mapsURL;
   echo $message;
   $url = 'https://api.swisscom.com/messaging/sms';
   $data = array(
-    "from" => "Test",
+    "from" => $appName,
     "to" => $number,
     "text" => $message,
     "callbackUrl" => "http://swisscom.com/callbackNotification"
@@ -66,7 +66,7 @@ class OperationController extends AbstractController
           ->findAllPlannedStandbies($plannedDatedate);
 
         foreach ($standbies as $standby) {
-          sendNotification($plannedDatedate, $standby->getUser()->getPhone(),$mapsURL);
+          sendNotification($plannedDatedate, $standby->getUser()->getPhone(),$mapsURL, $this->getParameter('appname'));
         }
 
         $response = new Response();
