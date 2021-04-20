@@ -17,7 +17,7 @@ class UserFixtures extends Fixture
     {
          $user->setPassword($this->passwordEncoder->encodePassword(
              $user,
-             'the_new_password'
+             'dispatch'
          ));
 
 
