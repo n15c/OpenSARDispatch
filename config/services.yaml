@@ -6,6 +6,7 @@
 parameters:
   appname: "%env(APP_NAME)%"
   sender_mail: "%env(SENDER_MAIL)%"
+  sms-apicid:  "%env(SMS_API_CLIENTID)%"
 services:
     # default configuration for services in *this* file
     _defaults:

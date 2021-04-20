@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\RescueOP;
 use App\Entity\Standby;
 
-function sendNotification($date, $number, $mapsURL, $appName)
+function sendNotification($date, $number, $mapsURL, $appName, $clientID)
 {
   $message = "Es wurde ein neuer Einsatz geplant. Du bist am ";
   $message .= $date->format('d.m.Y H:i:s') . " im Einsatz! " . $mapsURL;
@@ -24,7 +24,7 @@ function sendNotification($date, $number, $mapsURL, $appName)
 $data_str = json_encode($data);
 $options = array(
   'http' => array(
-    'header'  => "client_id: ***REMOVED***\r\nSCS-Version: 2\r\nContent-type: application/json\r\n",
+    'header'  => "client_id: " . $clientID . "\r\nSCS-Version: 2\r\nContent-type: application/json\r\n",
     'method'  => 'POST',
     'content' => $data_str
     )
@@ -67,7 +67,7 @@ class OperationController extends AbstractController
           ->findAllPlannedStandbies($plannedDatedate);
 
         foreach ($standbies as $standby) {
-          sendNotification($plannedDatedate, $standby->getUser()->getPhone(),$mapsURL, $this->getParameter('appname'));
+          sendNotification($plannedDatedate, $standby->getUser()->getPhone(),$mapsURL, $this->getParameter('appname'), $this->getParameter('sms-apicid'));
         }
 
         $response = new Response();

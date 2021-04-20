@@ -10,7 +10,7 @@ use App\Entity\Standby;
 use App\Entity\User;
 use App\Entity\PlanStatus;
 
-function sendPikettNotif($fromdate, $todate, $number, $appName)
+function sendPikettNotif($fromdate, $todate, $number, $appName, $clientID)
 {
   $message = "Dir wurde Pikett zugeteilt:\r\n ";
   $message .= $fromdate->format('d.m.Y') . " - " . $todate->format('d.m.Y');
@@ -24,7 +24,7 @@ function sendPikettNotif($fromdate, $todate, $number, $appName)
 $data_str = json_encode($data);
 $options = array(
   'http' => array(
-    'header'  => "client_id: ***REMOVED***\r\nSCS-Version: 2\r\nContent-type: application/json\r\n",
+    'header'  => "client_id: " . $clientID . "\r\nSCS-Version: 2\r\nContent-type: application/json\r\n",
     'method'  => 'POST',
     'content' => $data_str
     )
@@ -120,7 +120,7 @@ class StandbyController extends AbstractController
         $standby->setStatus($selStatus);
         $standby->setUser($selUser);
 
-        sendPikettNotif($standby->getDateFrom(),$standby->getDateTo(), $selUser->getPhone(), $this->getParameter('appname'));
+        sendPikettNotif($standby->getDateFrom(),$standby->getDateTo(), $selUser->getPhone(), $this->getParameter('appname'), $this->getParameter('sms-apicid'));
 
         $entityManager->persist($standby);
         $entityManager->flush();
