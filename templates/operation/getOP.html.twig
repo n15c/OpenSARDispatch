@@ -12,7 +12,12 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <h4 class="display-4">Einsätze anzeigen</h1>
+          <h4 class="display-4">Einsätze anzeigen</h4>
+          <a href="/app/operations/stats/csv">
+            {% if is_granted('ROLE_ADMIN') %}
+            <button type="button" class="btn btn-secondary" name="button">Statistiken herunterladen</button>
+            {% endif %}
+          </a>
         </div>
       </div>
       <div class="row">
@@ -36,7 +41,7 @@
             <td>{{op.creator.lastname}} {{op.creator.firstname}}</td>
             <td>{{op.comment}}</td>
             <td>{{op.plannedDate|date("d.m.Y H:i") }}</td>
-            {% if is_granted('ROLE_FARMER') %}
+            {% if (is_granted('ROLE_FARMER')) and (op.opCompleted == 0) %}
             <td><a href="/app/operations/delete/{{op.id}}" class="btn btn-danger">Delete</a></td>
             {% endif %}
           </tr>

@@ -221,4 +221,42 @@ class OperationController extends AbstractController
       $response->headers->set('Location', '/app/operations/' . $id);
       return $response;
   }
+
+  /**
+  * @Route("/app/operations/stats/csv", name="app_intelStats")
+  */
+  public function OPStats(): Response
+  {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+      $repository = $this->getDoctrine()->getRepository(RescueOP::class);
+      $operations = $repository->findAll();
+
+      $rows = array();
+      $rows[] = implode(',', ["opID", "Erstelldatum", "Ersteller", "Kommentar", "Geplantes Datum", "Einsatz beendet"]);
+      foreach ($operations as $operation) {
+        $opID = $operation->getID();
+        $opDate = $operation->getCreationDate()->format('d.m.Y');
+        $opCreator = $operation->getCreator()->getFirstname() . " " . $operation->getCreator()->getLastname();
+        $opComment = $operation->getComment();
+        $opPlannedDate = $operation->getPlannedDate()->format('d.m.Y H:i');
+        $opCompleted = $operation->getOpCompleted();
+
+        $data = array($opID,$opDate, $opCreator,$opComment, $opPlannedDate,$opCompleted);
+        $rows[] = implode(',', $data);
+      }
+
+      $content = implode("\n", $rows);
+
+      $appname = $this->getParameter('appname');
+
+      $response = new Response($content);
+
+      // Set the content disposition
+      $response->headers->set('Content-Disposition', "attachment; filename=" . date("d_m_Y") . "-OperationData.csv");
+      $response->headers->set('Content-Type', "text/csv; charset=UTF-8");
+
+      // Dispatch request
+      return $response;
+  }
 }
