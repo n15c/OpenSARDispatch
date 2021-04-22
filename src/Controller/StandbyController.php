@@ -76,7 +76,8 @@ class StandbyController extends AbstractController
           $todate = $standby->getDateTo();
           $fromdate = $standby->getDateFrom();
           $todate->modify('+1 day');
-          $stby["title"] = $username;
+          // $stby["title"] = $username;
+          $stby["title"] = $curruser->getFirstname() . " " . $curruser->getLastname();
           $stby["title"] .= " - " . $standby->getStatus()->getStatusName();
           $stby["id"] = $standby->getId();
           $stby["end"] = $todate->format($todate::ATOM);
@@ -205,4 +206,30 @@ class StandbyController extends AbstractController
       return $response;
     }
 
+    /**
+     * @Route("/app/standby/getStandby/{stbyID}", name="app_getsinglestby")
+     */
+    public function getStbyById(int $stbyID): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $repository = $this->getDoctrine()->getRepository(Standby::class);
+        $standby = $repository->find($stbyID);
+        $curruser = $standby->getUser();
+        $todate = $standby->getDateTo();
+        $fromdate = $standby->getDateFrom();
+        $todate->modify('+1 day');
+        $stby["user"] = $curruser->getId();
+        $stby["status"] = $standby->getStatus()->getId();
+        $stby["id"] = $standby->getId();
+        $stby["end"] = $todate->format($todate::ATOM);
+        $stby["start"] = $fromdate->format($fromdate::ATOM);
+
+        $json = json_encode($stby);
+        $response = new Response();
+        $response->setContent($json);
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/json');
+        return $response;
+    }
 }

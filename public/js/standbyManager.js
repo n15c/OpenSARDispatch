@@ -88,14 +88,37 @@ function clickDate(info){
 }
 
 function clickEvent(info) {
-    document.getElementById('InputEventId').value = info.event.id;
-    document.getElementById('InputEventFrom').valueAsDate = addDays(info.event.start,1);
-    document.getElementById('InputEventTo').valueAsDate = info.event.end;
-    document.getElementById('BtnSave').onclick = updateEvent;
-    document.getElementById('BtnDelete').onclick = deleteEvent;
-    document.getElementById('modalAlert').style = "display:none";
-    document.getElementById('BtnDelete').style = "";
-    $('#entryModal').modal('show');
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var selStby = JSON.parse(this.responseText);
+        document.getElementById('InputEventId').value = selStby["id"];
+        document.getElementById('InputEventFrom').valueAsDate = new Date(selStby["start"]);
+        document.getElementById('InputEventTo').valueAsDate = addDays(new Date(selStby["end"]),-1);
+        var optionsStatus = document.getElementById('EventStatus').options;
+        for (var i = 0; i < optionsStatus.length; i++) {
+          if (optionsStatus[i].value == selStby["status"]) {
+            optionsStatus[i].selected = true;
+          }
+        }
+        var optionsUser = document.getElementById('EventUser').options;
+        for (var i = 0; i < optionsUser.length; i++) {
+          if (optionsUser[i].value == selStby["user"]) {
+            optionsUser[i].selected = true;
+          }
+        }
+        document.getElementById('BtnSave').onclick = updateEvent;
+        document.getElementById('BtnDelete').onclick = deleteEvent;
+        document.getElementById('modalAlert').style = "display:none";
+        document.getElementById('BtnDelete').style = "";
+        $('#entryModal').modal('show');
+      }
+      else if (this.readyState == 4 && this.status != 200) {
+        document.getElementById('modalAlert').style = "";
+      }
+    };
+    xhttp.open("GET", "/app/standby/getStandby/" + info.event.id, true);
+    xhttp.send();
 }
 
 var calendarEl = document.getElementById('calendar');
