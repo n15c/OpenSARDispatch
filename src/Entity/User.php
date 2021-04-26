@@ -60,11 +60,6 @@ class User implements UserInterface
      */
     private $standbies;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=UserType::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $UserType;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -235,18 +230,6 @@ class User implements UserInterface
                 $standby->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUserType(): ?UserType
-    {
-        return $this->UserType;
-    }
-
-    public function setUserType(?UserType $UserType): self
-    {
-        $this->UserType = $UserType;
 
         return $this;
     }

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\User;
-use App\Entity\UserType;
 use App\Entity\PlanStatus;
 
 class AdminController extends AbstractController
@@ -26,9 +25,6 @@ class AdminController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
         $users = $repository->findAll();
 
-        $repository = $this->getDoctrine()->getRepository(UserType::class);
-        $usertypes = $repository->findAll();
-
         $repository = $this->getDoctrine()->getRepository(PlanStatus::class);
         $statuses = $repository->findAll();
 
@@ -36,8 +32,7 @@ class AdminController extends AbstractController
           'curruser' => $curruser,
           'appname'=> $appname,
           'users'=>$users,
-          'statuses'=>$statuses,
-          'usertypes'=>$usertypes
+          'statuses'=>$statuses
         ]);
     }
 
