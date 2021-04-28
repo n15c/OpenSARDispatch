@@ -1,0 +1,74 @@
+{% extends 'appbase.html.twig' %}
+{% block title %}Welcome to {{ appname }}{% endblock %}
+{% block additionalStuff %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="display-4">Dokumente</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Beschreibung</th>
+                  <th scope="col">Aktion</th>
+                </tr>
+              </thead>
+              <tbody>
+            {% for doc in documents %}
+            <tr>
+              <th scope="row">{{doc.getTitle()}}</th>
+              <td>{{doc.getdescription()}}</td>
+              <td>
+              <a href="/app/documents/get/{{doc.id}}" class="btn btn-secondary">Herunterladen</a>
+              {% if is_granted('ROLE_ADMIN') %}
+              <a href="/app/documents/delete/{{doc.id}}?csrf={{ csrf_token('delete-doc') }}" class="btn btn-danger">Delete</a>
+              {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Datei hochladen</h3>
+        <div class="col">
+          <form action="/app/documents/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="docTitle">Titel</label>
+              <input type="text" required class="form-control" id="docTitle" name="docTitle" placeholder="Titel">
+            </div>
+            <div class="form-group">
+              <label for="docDesc">Beschreibung</label>
+              <input type="text" required class="form-control" id="docDesc" name="docDesc" placeholder="Beschreibung">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="docFile">Datei:</label>
+              <input type="file" required class="form-control-file" id="docFile" name="docFile" accept="image/*,.pdf">
+            </div>
+            <br>
+            <div class="form-group">
+              <input type="hidden" name="token" value="{{ csrf_token('upload-doc') }}"/>
+              <input type="submit" class="btn btn-primary" value="Hochladen">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock %}
