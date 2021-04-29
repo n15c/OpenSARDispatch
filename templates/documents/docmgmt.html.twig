@@ -43,6 +43,7 @@
         </div>
         </div>
       </div>
+      {% if is_granted('ROLE_ADMIN') %}
       <div class="row">
         <h3>Datei hochladen</h3>
         <div class="col">
@@ -68,6 +69,7 @@
           </form>
         </div>
       </div>
+      {% endif %}
     </div>
   </body>
 </html>
