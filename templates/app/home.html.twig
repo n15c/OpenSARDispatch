@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <h4 class="display-4">Startseite</h1>
+          <h4 class="display-4">Startseite</h4>
         </div>
       </div>
       <div class="row">
@@ -14,6 +14,29 @@
           <p>Hier können Pikettdienste geplant, Einsätze verwaltet und Rapporte erfasst werden. Für Hilfe kann das Handbuch konsultiert werden (noch zu erstellen).</p>
           <p>Fragen oder Feedback können gerne via Mail an <a href="mailto:nisc@n3xus.io">nisc@n3xus.io</a> gesendet werden.</p>
           <p>Viel Spass!</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h4>Deine geplanten Pikettdienste</h4>
+          <table class="table">
+            <thead>
+              <th>Von</th>
+              <th>Bis</th>
+              <th>Status</th>
+            </thead>
+            <tbody>
+              {% for stby in standbies | sort %}
+                {% if stby.getdateTo() >= date()| date_modify("-1 day") %}
+                  <tr {% if stby.getdateFrom() < date() %}class="table-success"{% endif %}>
+                    <td>{{stby.getdateFrom()|date('d.m.Y')}}</td>
+                    <td>{{stby.getdateTo()|date('d.m.Y')}}</td>
+                    <td>{{stby.getStatus().getstatusName()}}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

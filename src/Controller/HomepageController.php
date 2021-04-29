@@ -17,11 +17,13 @@ class HomepageController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $curruser = $this->getUser();
+        $standbies = $curruser->getStandbies();
         $appname = $this->getParameter('appname');
 
         return $this->render('app/home.html.twig', [
           'curruser' => $curruser,
-          'appname'=> $appname
+          'appname'=> $appname,
+          'standbies'=>$standbies
         ]);
     }
 }
