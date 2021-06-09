@@ -66,10 +66,16 @@ class User implements UserInterface
      */
     private $phone;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TravelExpense::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $travelExpenses;
+
     public function __construct()
     {
         $this->rescueOPs = new ArrayCollection();
         $this->standbies = new ArrayCollection();
+        $this->travelExpenses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -242,6 +248,36 @@ class User implements UserInterface
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TravelExpense[]
+     */
+    public function getTravelExpenses(): Collection
+    {
+        return $this->travelExpenses;
+    }
+
+    public function addTravelExpense(TravelExpense $travelExpense): self
+    {
+        if (!$this->travelExpenses->contains($travelExpense)) {
+            $this->travelExpenses[] = $travelExpense;
+            $travelExpense->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTravelExpense(TravelExpense $travelExpense): self
+    {
+        if ($this->travelExpenses->removeElement($travelExpense)) {
+            // set the owning side to null (unless already changed)
+            if ($travelExpense->getUser() === $this) {
+                $travelExpense->setUser(null);
+            }
+        }
 
         return $this;
     }
