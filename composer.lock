@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0eeccd87f6f2a3493ec6151984a7c25",
+    "content-hash": "f0034a21f4f139c50a95191cf2f12e05",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -3079,7 +3079,7 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.2.10",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
