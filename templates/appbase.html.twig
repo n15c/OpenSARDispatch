@@ -36,7 +36,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="/app/documents">Dokumente</a>
               </li>
-              {% if is_granted('ROLE_PILOT') %}
+              {% if is_granted('ROLE_ADMIN') %}
               <li class="nav-item">
                 <a class="nav-link" href="/app/standby" tabindex="-1" aria-disabled="true">Einteilungsplan</a>
               </li>

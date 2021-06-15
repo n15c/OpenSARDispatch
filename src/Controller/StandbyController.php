@@ -98,7 +98,7 @@ class StandbyController extends AbstractController
     */
     public function createStandby(): Response
     {
-      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
       $user = $this->getUser();
       $request = Request::createFromGlobals();
       if ($request->getMethod() == "POST") {
@@ -141,14 +141,10 @@ class StandbyController extends AbstractController
      * @Route("/app/standbies/delete/{delStby}", name="app_delstby")
      */
     public function delete(int $delStby): Response{
-      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
       $repository = $this->getDoctrine()->getRepository(Standby::class);
       $standby = $repository->find($delStby);
-
-      if ($this->getUser() != $standby->getUser()) {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-      }
 
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->remove($standby);
@@ -163,7 +159,7 @@ class StandbyController extends AbstractController
      * @Route("/app/standbies/update/{updStby}", name="app_updstby")
      */
     public function update(int $updStby): Response{
-      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 
 
@@ -184,10 +180,6 @@ class StandbyController extends AbstractController
         throw $this->createNotFoundException(
            'No standby found for id '.$updStby
         );
-
-        if ($this->getUser() != $standby->getUser()) {
-          $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        }
 
         $response = new Response();
         $response->setStatusCode(404);
